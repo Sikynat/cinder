@@ -13,24 +13,9 @@ int main() {
         SDL_WINDOW_SHOWN
     );
 
-    if (window == nullptr) {
-        std::cout << "Erro: " << SDL_GetError() << std::endl;
-        return 1;
-    }
-
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
-    SDL_SetRenderDrawColor(renderer, 10, 10, 20, 255);
-    SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 255, 100, 0, 255);
-    SDL_Rect retangulo = {100, 100, 200, 80};
-    SDL_RenderFillRect(renderer, &retangulo);
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_Rect retangulo02 = {100, 300, 200, 80};
-    SDL_RenderFillRect(renderer, &retangulo02);
-
-    SDL_RenderPresent(renderer);
+    SDL_Rect botao = {100, 100, 200, 80};
 
     SDL_Event event;
     bool rodando = true;
@@ -41,6 +26,24 @@ int main() {
                 rodando = false;
             }
         }
+
+        int mouse_x, mouse_y;
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+
+        SDL_Point mouse = {mouse_x, mouse_y};
+        bool hover = SDL_PointInRect(&mouse, &botao);
+
+        SDL_SetRenderDrawColor(renderer, 10, 10, 20, 255);
+        SDL_RenderClear(renderer);
+
+        if (hover) {
+            SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 255, 100, 0, 255);
+        }
+
+        SDL_RenderFillRect(renderer, &botao);
+        SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
