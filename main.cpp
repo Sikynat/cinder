@@ -18,20 +18,34 @@ int main() {
     SDL_Rect botao = {100, 100, 200, 80};
 
     SDL_Event event;
+
     bool rodando = true;
+    bool hover = false;
 
     while (rodando) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                rodando = false;
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_QUIT) {
+                    rodando = false;
+                }
+
+                if (event.type == SDL_MOUSEBUTTONDOWN) {
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                if (hover) {
+                // clicou no botão
+                std::cout << "clicou!" << std::endl;
+                }
             }
+        }
+
+
         }
 
         int mouse_x, mouse_y;
         SDL_GetMouseState(&mouse_x, &mouse_y);
-
+        
         SDL_Point mouse = {mouse_x, mouse_y};
-        bool hover = SDL_PointInRect(&mouse, &botao);
+        hover = SDL_PointInRect(&mouse, &botao);
+
 
         SDL_SetRenderDrawColor(renderer, 10, 10, 20, 255);
         SDL_RenderClear(renderer);
