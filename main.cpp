@@ -1,10 +1,12 @@
 #include "/opt/homebrew/opt/sdl2/include/SDL2/SDL.h"
-#include <iostream>
 #include "/opt/homebrew/opt/sdl2_ttf/include/SDL2/SDL_ttf.h"
+#include <iostream>
+#include "botao.h"
 
 int main() {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
+
     TTF_Font* fonte = TTF_OpenFont("/Library/Fonts/Arial Unicode.ttf", 24);
 
     SDL_Window* window = SDL_CreateWindow(
@@ -18,77 +20,60 @@ int main() {
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
-
-    // Posição do botao
     SDL_Rect botao = {100, 100, 200, 80};
-
     SDL_Event event;
-
     bool rodando = true;
     bool hover = false;
 
-    while (rodando) {
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    rodando = false;
-                }
+    SDL_Rect botao2 = {100, 250, 200, 80};
+    bool hover2 = false;
 
-                if (event.type == SDL_MOUSEBUTTONDOWN) {
+    SDL_Rect botao3 = {100, 350, 200, 80};
+    bool hover3 = false;
+
+    while (rodando) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                rodando = false;
+            }
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (event.button.button == SDL_BUTTON_LEFT) {
-                if (hover) {
-                // clicou no botão
-                std::cout << "clicou!" << std::endl;
+                    if (hover) {
+                        std::cout << "clicou!" << std::endl;
+                    }
+
+                    if (hover3) {
+                        rodando = false;
+                    }
                 }
             }
         }
 
-
-        }
-
         int mouse_x, mouse_y;
         SDL_GetMouseState(&mouse_x, &mouse_y);
-        
+
         SDL_Point mouse = {mouse_x, mouse_y};
         hover = SDL_PointInRect(&mouse, &botao);
-
 
         SDL_SetRenderDrawColor(renderer, 10, 10, 20, 255);
         SDL_RenderClear(renderer);
 
-        if (hover) {
-            SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255);
-        } else {
-            SDL_SetRenderDrawColor(renderer, 255, 100, 0, 255);
-        }
+        desenhar_botao(renderer, fonte, 100, 100, 200, 80, "Clique aqui", hover);
 
-        SDL_RenderFillRect(renderer, &botao);
+        hover2 = SDL_PointInRect(&mouse, &botao2);
+        desenhar_botao(renderer, fonte, 100, 250, 200, 80, "Outro botao", hover2);
 
-        SDL_Color cor_texto = {255, 255, 255, 255};
-
-        SDL_Surface* superficie = TTF_RenderText_Blended(fonte, "Clique aqui", cor_texto);
-        SDL_Texture* textura = SDL_CreateTextureFromSurface(renderer, superficie);
-
-        int text_w, text_h;
-        SDL_QueryTexture(textura, NULL, NULL, &text_w, &text_h);
-
-        SDL_Rect dest = {
-            botao.x + (botao.w - text_w) / 2,
-            botao.y + (botao.h - text_h) / 2,
-            text_w,
-            text_h
-        };
-
-        SDL_RenderCopy(renderer, textura, NULL, &dest);
-        SDL_FreeSurface(superficie);
-        SDL_DestroyTexture(textura);
+        hover3 = SDL_PointInRect(&mouse, &botao3);
+        desenhar_botao(renderer, fonte, 100, 350, 200, 80, "Sair", hover3);
 
         SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_Quit();
     TTF_CloseFont(fonte);
     TTF_Quit();
+    SDL_Quit();
     return 0;
+
 }
