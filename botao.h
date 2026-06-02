@@ -9,5 +9,7 @@ void desenhar_botao(
     int x, int y,
     int largura, int altura,
     std::string texto,
-    bool hover
+    bool hover,
+    SDL_Color cor_normal,
+    SDL_Color cor_hover
 );

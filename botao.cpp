@@ -6,16 +6,19 @@ void desenhar_botao(
     int x, int y,
     int largura, int altura,
     std::string texto,
-    bool hover
+    bool hover,
+    SDL_Color cor_normal,
+    SDL_Color cor_hover
 ) {
     SDL_Rect botao = {x, y, largura, altura};
 
-    if (hover) {
-        SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255);
-    } else {
-        SDL_SetRenderDrawColor(renderer, 255, 100, 0, 255);
-    }
+   if (hover) {
 
+    SDL_SetRenderDrawColor(renderer, cor_hover.r, cor_hover.g, cor_hover.b, cor_hover.a);
+
+    } else {
+        SDL_SetRenderDrawColor(renderer, cor_normal.r, cor_normal.g, cor_normal.b, cor_normal.a);
+    }
     SDL_RenderFillRect(renderer, &botao);
 
     SDL_Color cor_texto = {255, 255, 255, 255};
@@ -36,3 +39,4 @@ void desenhar_botao(
     SDL_FreeSurface(superficie);
     SDL_DestroyTexture(textura);
 }
+
