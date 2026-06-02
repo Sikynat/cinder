@@ -13,3 +13,11 @@ void desenhar_botao(
     SDL_Color cor_normal,
     SDL_Color cor_hover
 );
+
+struct Botao {
+    SDL_Rect area;
+    bool hover;
+    std::string texto;
+    SDL_Color cor;
+    SDL_Color cor_hover;
+};
